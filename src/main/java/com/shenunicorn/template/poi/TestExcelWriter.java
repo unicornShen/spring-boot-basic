@@ -18,12 +18,18 @@ public class TestExcelWriter {
 
             // 創建表頭
             Row headerRow1 = sheet1.createRow(0);
-            headerRow1.createCell(0).setCellValue("Column1");
-            headerRow1.createCell(1).setCellValue("Column2");
+            headerRow1.createCell(0).setCellValue("測試寬度");
+            headerRow1.createCell(1).setCellValue("測試中文寬度");
             // 添加數據
             Row dataRow1 = sheet1.createRow(1);
             dataRow1.createCell(0).setCellValue("Data1");
             dataRow1.createCell(1).setCellValue("Data2");
+            dataRow1.createCell(3).setCellValue("");
+            
+            // 以英文開度為基準 (長度 * 256)
+            // 以中文寬度為基準 (長度 * 3 * 210)
+            sheet1.setColumnWidth(0, 4 * 3 * 210);
+            sheet1.setColumnWidth(1, 6 * 3 * 210);
 
             //---------------------------
             //---- 創建第二個 sheet
@@ -40,7 +46,7 @@ public class TestExcelWriter {
             dataRow2.createCell(1).setCellValue("DataB");
 
             // 將 workbook 寫入檔案
-            try (FileOutputStream fileOut = new FileOutputStream("workbook.xlsx")) {
+            try (FileOutputStream fileOut = new FileOutputStream("C:\\Work\\TestExcelWriter.xlsx")) {
                 workbook.write(fileOut);
             }
         } catch (IOException e) {

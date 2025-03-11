@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -45,10 +46,17 @@ public class TestReadAllSheetData {
 					
 					final StringBuilder jsonValue = new StringBuilder();
 					jsonValue.append("[");
+					
+					int cellCount = row.getPhysicalNumberOfCells();
 
-					Iterator<Cell> cellsIterator = row.cellIterator();
-					while (cellsIterator.hasNext()) {
-						XSSFCell cell = (XSSFCell) cellsIterator.next();
+				    // 遍历所有单元格，包括空白单元格
+				    for (int i = 0; i < cellCount; i++) {
+				        Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+//				    }
+// 用 row.cellIterator() 會略過空值 cell
+//					Iterator<Cell> cellsIterator = row.cellIterator();
+//					while (cellsIterator.hasNext()) {
+//						XSSFCell cell = (XSSFCell) cellsIterator.next();
 						int cellIndex = cell.getColumnIndex();
 						System.out.println("numberOfSheets: " + sheetIndex + " rowIndex: " + rowIndex + " cellIndex: "
 								+ cellIndex + " cellValue: " + cell.toString());
